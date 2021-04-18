@@ -11,6 +11,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +44,7 @@ const rows = [
     createData('Mazda RX7 2018', "Front Bumper", "18000", 24, 1),
     createData('Mazda RX7 2018', "Rear Bumper", "19000", 24, 2),
     createData('Nissan RX7 2018', "Rear Bumper", "29000", 24, 3),
-   
+
 ];
 
 export default function SparePartViewerPage() {
@@ -78,10 +81,11 @@ export default function SparePartViewerPage() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Car Name</TableCell>
-                                    <TableCell align="right">Spare Part Name</TableCell>
-                                    <TableCell align="right">Unit Price(LKR)</TableCell>
-                                    <TableCell align="right">Current Stock</TableCell>
-                                    <TableCell align="right">New Stock</TableCell>
+                                    <TableCell >Spare Part Name</TableCell>
+                                    <TableCell >Unit Price(LKR)</TableCell>
+                                    <TableCell >Current Stock</TableCell>
+                                    <TableCell >New Stock</TableCell>
+                                    <TableCell >Delete Item</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -90,9 +94,20 @@ export default function SparePartViewerPage() {
                                         <TableCell component="th" scope="row">
                                             {row.carName}
                                         </TableCell>
-                                        <TableCell align="right">{row.sparePartName}</TableCell>
-                                        <TableCell align="right">{row.unitPrice}</TableCell>
-                                        <TableCell align="right">{row.stock}</TableCell>
+                                        <TableCell >{row.sparePartName}</TableCell>
+                                        <TableCell >{row.unitPrice}</TableCell>
+                                        <TableCell >{row.stock}</TableCell>
+                                        <TableCell>
+                                            <TextField id="NewStock" label="New Stock Amount" type="number" fullWidth />
+                                            <br />
+                                            <br />
+                                            <Button color="primary" variant="contained" fullWidth>Update</Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton aria-label="delete" className={classes.margin}>
+                                                <DeleteIcon fontSize="large" />
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
