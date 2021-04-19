@@ -9,7 +9,8 @@ import CheckoutPage from "./Components/CheckoutPage"
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
 
 import React from "react"
@@ -150,22 +151,47 @@ function App() {
           </div>
           <Divider />
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+              <ListItem>
+                  
+                    <Link to = "/" style = {{textDecoration:"none", color:"black"}}>
+                        <ListItemText>
+                            Home
+                          </ListItemText>
+                    </Link>
+
               </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+              <ListItem>
+                    <Link to = "/addCar" style = {{textDecoration:"none", color:"black"}}>
+                        <ListItemText>
+                           Add Car
+                          </ListItemText>
+                    </Link>
               </ListItem>
-            ))}
+              <ListItem>        
+                    <Link to = "/registerSparePart" style = {{textDecoration:"none", color:"black"}}>
+                        <ListItemText>
+                           Register Spare Part
+                          </ListItemText>
+                    </Link>
+              </ListItem>
+              <ListItem>
+                    <Link to = "/sparePartViewer" style = {{textDecoration:"none", color:"black"}}>
+                        <ListItemText>
+                           Viewe Spare Part
+                          </ListItemText>
+                    </Link>
+               
+              </ListItem>
+              <ListItem>
+                    <Link to = "/checkout" style = {{textDecoration:"none", color:"black"}}>
+                        <ListItemText>
+                          Checkout
+                          </ListItemText>
+                    </Link>
+               
+              </ListItem>
           </List>
+         
         </Drawer>
         <main
           className={clsx(classes.content, {

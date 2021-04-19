@@ -47,10 +47,67 @@ const rows = [
 
 ];
 
+
+
 export default function SparePartViewerPage() {
 
     const classes = useStyles();
 
+    //const [state, setstate] = useState(initialState)
+
+    React.useEffect(() => {
+        fetch('http://localhost:4000/getAllCars', { // fake API endpoint
+            method: 'GET',
+        })
+            .then(res => res.json())
+            .then(data => {
+                //console.log(data)
+                setCarList(data)
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, [])
+
+    const [carList, setCarList] = React.useState([])
+    const [carID, setCarID] = React.useState("1:")
+
+
+    const [sparePartList, setSparePartList] = React.useState([])
+
+    React.useEffect(() => {
+        let car = carID.substr(0, carID.indexOf(':'));
+        //console.log();
+        fetch(`http://localhost:4000/getSparePartByCar/${car}`, { // fake API endpoint
+            method: 'GET',
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                setSparePartList(data)
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, [carID])
+    
+    const handleDelete = async (id) => {
+        console.log(id)
+        const rawResponse = await fetch(`http://localhost:4000/deleteSparePart/${id}`, {
+            method: 'DELETE',
+        });
+
+        console.log(rawResponse);
+
+        if(rawResponse.status === 200)
+        {
+            alert("Delete Successfull ");
+        }
+        else
+        {
+            alert("Could Not Delete from  Database ");
+        }
+    }
 
     return (
         <div>
@@ -63,13 +120,18 @@ export default function SparePartViewerPage() {
                     <br />
                 </Grid>
                 <Grid item xs={12} >
-                    <Autocomplete
-                        id="combo-box-demo"
-                        options={[{ carName: 'Toyota RX7 2018', carID: "123" }, { carName: 'Mazda RX7 2018', carID: "321" }]}
-                        getOptionLabel={(option) => option.carName}
-                        style={{ width: "95%", marginRight: "16px" }}
-                        renderInput={(params) => <TextField {...params} label="Filter By Car Name" variant="outlined" />}
-                    />
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={carList}
+                                    getOptionLabel={(option) => `${option.car_id}: ${option.car_brand} ${option.car_model} ${option.year}`}
+                                    style={{ width: "95%" , marginRight:"16px"}}
+                                    renderInput={(params) => 
+                                        <TextField {...params} 
+                                            label="Car Name" 
+                                            variant="outlined" 
+                                        />}
+                                    onInputChange={ (event, value ) => setCarID(value)}
+                                />
                 </Grid>
                 <Grid item xs={12} >
                     <br />
@@ -89,13 +151,24 @@ export default function SparePartViewerPage() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
+                                {
+                                    // car: 3
+                                    // ​​
+                                    // price: 25000
+                                    // ​​
+                                    // spare_part_id: 3
+                                    // ​​
+                                    // spare_part_type: "Windshield"
+                                    // ​​
+                                    // stock: 100
+                                sparePartList.map((row) => (
+                                    
                                     <TableRow key={row.id}>
                                         <TableCell component="th" scope="row">
-                                            {row.carName}
+                                            {row.car}
                                         </TableCell>
-                                        <TableCell >{row.sparePartName}</TableCell>
-                                        <TableCell >{row.unitPrice}</TableCell>
+                                        <TableCell >{row.spare_part_type}</TableCell>
+                                        <TableCell >{row.price}</TableCell>
                                         <TableCell >{row.stock}</TableCell>
                                         <TableCell>
                                             <TextField id="NewStock" label="New Stock Amount" type="number" fullWidth />
@@ -105,7 +178,11 @@ export default function SparePartViewerPage() {
                                         </TableCell>
                                         <TableCell>
                                             <IconButton aria-label="delete" className={classes.margin}>
-                                                <DeleteIcon fontSize="large" />
+                                                <DeleteIcon 
+                                                    fontSize="large"
+                                                    id = {row.spare_part_id} 
+                                                    onClick = { (e) => handleDelete(e.target.id) }
+                                                />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>

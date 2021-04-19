@@ -8,6 +8,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
+var cors = require('cors');
+app.use(cors());
+
 const port = 4000
 
 const sqlite3 = require('sqlite3').verbose();
